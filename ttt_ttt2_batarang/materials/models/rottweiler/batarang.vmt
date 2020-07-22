@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+"$baseTexture" "models/rottweiler/batarang"
+"$bumpmap" "models/rottweiler/batarang_normal"
+"$envmap" "env_cubemap"
+"$envmaptint" "[ .9 .9 .9 ]"
+"$normalmapalphaenvmapmask" "1"
+}
