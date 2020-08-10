@@ -26,7 +26,7 @@ SWEP.EquipMenuData = {
     desc = "You are Batman now."
 }
 
-SWEP.AllowDrop = true
+SWEP.AllowDrop = false
 SWEP.IsSilent = false
 SWEP.NoSights = false
 SWEP.AutoSpawnable = false
