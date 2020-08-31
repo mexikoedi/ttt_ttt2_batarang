@@ -1,3 +1,4 @@
+if engine.ActiveGamemode( ) != "terrortown" then return end
 if ( SERVER ) then
     AddCSLuaFile( "shared.lua" )
     SWEP.HoldType = "melee"
