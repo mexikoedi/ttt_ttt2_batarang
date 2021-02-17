@@ -1,12 +1,12 @@
-if engine.ActiveGamemode( ) != "terrortown" then return end
-include( "shared.lua" )
+if engine.ActiveGamemode() ~= "terrortown" then return end
+include("shared.lua")
 
-function ENT:Initialize( )
+function ENT:Initialize()
 end
 
-function ENT:Think( )
+function ENT:Think()
 end
 
-function ENT:Draw( )
-    self:DrawModel( )
+function ENT:Draw()
+    self:DrawModel()
 end
