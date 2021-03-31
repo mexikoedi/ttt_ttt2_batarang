@@ -25,6 +25,7 @@ SWEP.LimitedStock = true
 
 SWEP.EquipMenuData = {
     type = "item_weapon",
+    name = "Batarang",
     desc = "You are Batman now."
 }
 
