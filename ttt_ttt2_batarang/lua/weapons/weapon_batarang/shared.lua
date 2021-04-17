@@ -60,7 +60,7 @@ SWEP.WorldModel = "models/rottweiler/w_batarang.mdl"
 -------------Primary Fire Attributes----------------------------------------
 SWEP.Primary.Delay = 0.9 --In seconds
 SWEP.Primary.Recoil = 0.5 --Gun Kick
-SWEP.Primary.Damage = 200 --Damage per Bullet
+SWEP.Primary.Damage = 500 --Damage per Bullet
 SWEP.Primary.NumShots = 1 --Number of shots per one fire
 SWEP.Primary.Cone = 0 --Bullet Spread
 SWEP.Primary.ClipSize = 3 --Use "-1 if there are no clips"
@@ -93,7 +93,7 @@ end
 
 function SWEP:PrimaryAttack()
     self:EmitSound("weapons/batarang/throw" .. tostring(math.random(1, 4)) .. ".wav")
-    self:ShootBullet(200, 1, 0.01)
+    self:ShootBullet(500, 1, 0.01)
     self:TakePrimaryAmmo(1)
     self:GetOwner():ViewPunch(Angle(-1, 0, 0))
     self:SetNextPrimaryFire(CurTime() + 0.8)
