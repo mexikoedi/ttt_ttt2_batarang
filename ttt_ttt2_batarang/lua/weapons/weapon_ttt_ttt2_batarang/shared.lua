@@ -40,8 +40,8 @@ if (CLIENT) then
     SWEP.ViewModelFOV = 86
     SWEP.IconLetter = "x"
     killicon.Add("batarang", "batarang/deathicon", Color(180, 0, 0, 255))
-    killicon.AddAlias("weapon_batarang", "batarang")
-    killicon.AddAlias("ent_batarang", "batarang")
+    killicon.AddAlias("weapon_ttt_ttt2_batarang", "batarang")
+    killicon.AddAlias("ent_ttt_ttt2_batarang", "batarang")
 end
 
 ------------General Swep Info---------------
@@ -101,7 +101,7 @@ function SWEP:PrimaryAttack()
     self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
 
     if SERVER then
-        local batarang = ents.Create("ent_batarang")
+        local batarang = ents.Create("ent_ttt_ttt2_batarang")
         batarang:SetAngles(self:GetOwner():EyeAngles()) -- Angle(0,90,0))
         batarang:SetPos(self:GetOwner():GetShootPos())
         batarang:SetOwner(self:GetOwner())
