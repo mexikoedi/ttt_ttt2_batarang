@@ -1,6 +1,11 @@
 if engine.ActiveGamemode() ~= "terrortown" then return end
 ENT.Base = "base_anim"
 ENT.Type = "anim"
-ENT.Spawnable = false
-ENT.AdminSpawnable = false
 ENT.PrintName = "Batarang"
+ENT.Author = "mexikoedi"
+ENT.Contact = "Steam"
+ENT.Instructions = "Is only used for the batarang weapon."
+ENT.Purpose = "Batarang entity for the batarang weapon."
+ENT.Spawnable = false
+ENT.AdminOnly = false
+ENT.AdminSpawnable = false
