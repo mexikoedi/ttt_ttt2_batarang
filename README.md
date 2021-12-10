@@ -1,6 +1,6 @@
-# TTT_TTT2_Batarang
+# ttt_ttt2_batarang
 
-TTT_TTT2_Batarang Addon for Garry's Mod.
+ttt_ttt2_batarang addon for Garry's Mod.
 
 More information are available here: 
 https://steamcommunity.com/sharedfiles/filedetails/?id=2024708568

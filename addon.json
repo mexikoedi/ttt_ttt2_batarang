@@ -1,11 +1,11 @@
 {
-    "title": "TTT/TTT2 Batarang",
+    "title": "[TTT|2] Batarang [WEAPON]",
     "type": "weapon",
     "tags": [
         "fun",
         "comic"
     ],
-    "description": "You are Batman now. Works ONLY for TTT2!",
+    "description": "Throw Batarangs at your enemies like Batman.",
     "ignore": [
         "*.psd",
         "*.vcproj",
