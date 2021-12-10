@@ -1,8 +1,9 @@
 if engine.ActiveGamemode() ~= "terrortown" then return end
 
 if SERVER then
-    AddCSLuaFile("shared.lua")
-    SWEP.HoldType = "melee"
+    AddCSLuaFile()
+    resource.AddFile("materials/models/rottweiler/batarang.vmt")
+    resource.AddFile("materials/vgui/entities/weapon_batarang.vmt")
 end
 
 SWEP.Base = "weapon_tttbase"
@@ -11,12 +12,7 @@ SWEP.Slot = 6
 SWEP.SlotPos = 2
 SWEP.AmmoEnt = nil
 SWEP.Icon = "vgui/entities/weapon_batarang"
-
-if SERVER then
-    resource.AddFile("materials/batarang/deathicon.vmt")
-    resource.AddFile("materials/models/rottweiler/batarang.vmt")
-    resource.AddFile("materials/vgui/entities/weapon_batarang.vmt")
-end
+SWEP.HoldType = "melee"
 
 SWEP.CanBuy = {ROLE_DETECTIVE}
 
@@ -33,15 +29,6 @@ SWEP.AllowDrop = false
 SWEP.IsSilent = false
 SWEP.NoSights = false
 SWEP.AutoSpawnable = false
-
-if CLIENT then
-    SWEP.ViewModelFOV = 86
-    SWEP.IconLetter = "x"
-    killicon.Add("batarang", "batarang/deathicon", Color(180, 0, 0, 255))
-    killicon.AddAlias("weapon_ttt_ttt2_batarang", "batarang")
-    killicon.AddAlias("ent_ttt_ttt2_batarang", "batarang")
-end
-
 SWEP.PrintName = "Batarang"
 SWEP.Author = "mexikoedi"
 SWEP.Contact = "Steam"
@@ -53,14 +40,13 @@ SWEP.AdminSpawnable = false
 SWEP.UseHands = true
 SWEP.ViewModel = "models/rottweiler/v_batarang.mdl"
 SWEP.WorldModel = "models/rottweiler/w_batarang.mdl"
-SWEP.Primary.Delay = 0.9
+SWEP.ViewModelFOV = 86
 SWEP.Primary.Recoil = 0.5
-SWEP.Primary.Damage = 500
-SWEP.Primary.NumShots = 1
-SWEP.Primary.Cone = 0
-SWEP.Primary.ClipSize = 3
-SWEP.Primary.DefaultClip = 3
-SWEP.Primary.Automatic = true
+SWEP.Primary.Damage = GetConVar("ttt_batarang_damage"):GetInt()
+SWEP.Primary.ClipSize = GetConVar("ttt_batarang_clipSize"):GetInt()
+SWEP.Primary.DefaultClip = GetConVar("ttt_batarang_ammo"):GetInt()
+SWEP.Primary.Automatic = GetConVar("ttt_batarang_automaticFire"):GetBool()
+SWEP.Primary.RPS = GetConVar("ttt_batarang_rps"):GetFloat()
 SWEP.Primary.Ammo = "none"
 
 if CLIENT then
@@ -79,18 +65,29 @@ function SWEP:Initialize()
     util.PrecacheSound("weapons/batarang/throw2.wav")
     util.PrecacheSound("weapons/batarang/throw3.wav")
     util.PrecacheSound("weapons/batarang/throw4.wav")
+    if CLIENT then return end
+    self.Primary.Damage = GetConVar("ttt_batarang_damage"):GetInt()
+    self.Primary.ClipSize = GetConVar("ttt_batarang_clipSize"):GetInt()
+    self.Primary.DefaultClip = GetConVar("ttt_batarang_ammo"):GetInt()
+    self.Primary.Automatic = GetConVar("ttt_batarang_automaticFire"):GetBool()
+    self.Primary.RPS = GetConVar("ttt_batarang_rps"):GetFloat()
 end
 
 function SWEP:PrimaryAttack()
+    self:SetNextPrimaryFire(CurTime() + 1 / self.Primary.RPS)
+    if not self:CanPrimaryAttack() then return end
     local dmg = DamageInfo()
     dmg:SetAttacker(self:GetOwner())
     dmg:SetInflictor(self)
-    self:EmitSound("weapons/batarang/throw" .. tostring(math.random(1, 4)) .. ".wav")
-    self:ShootBullet(500, 1, 0.01)
+
+    if GetConVar("ttt_batarang_primary_sound"):GetBool() then
+        self:EmitSound("weapons/batarang/throw" .. tostring(math.random(1, 4)) .. ".wav")
+    end
+
+    local dm = GetConVar("ttt_batarang_damage"):GetInt()
+    self:ShootBullet(dm, 1, 0)
     self:TakePrimaryAmmo(1)
     self:GetOwner():ViewPunch(Angle(-1, 0, 0))
-    self:SetNextPrimaryFire(CurTime() + 0.8)
-    self:SetNextSecondaryFire(CurTime() + 0.8)
     self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
 
     if SERVER then
