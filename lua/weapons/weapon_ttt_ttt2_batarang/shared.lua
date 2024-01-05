@@ -1,5 +1,4 @@
 if engine.ActiveGamemode() ~= "terrortown" then return end
-
 if SERVER then
     AddCSLuaFile()
     resource.AddFile("materials/models/rottweiler/batarang.vmt")
@@ -13,12 +12,9 @@ SWEP.SlotPos = 2
 SWEP.AmmoEnt = nil
 SWEP.Icon = "vgui/entities/weapon_batarang"
 SWEP.HoldType = "melee"
-
 SWEP.CanBuy = {ROLE_DETECTIVE}
-
 SWEP.InLoadoutFor = nil
 SWEP.LimitedStock = true
-
 SWEP.EquipMenuData = {
     type = "item_weapon",
     name = "Batarang",
@@ -48,11 +44,9 @@ SWEP.Primary.DefaultClip = GetConVar("ttt_batarang_ammo"):GetInt()
 SWEP.Primary.Automatic = GetConVar("ttt_batarang_automaticFire"):GetBool()
 SWEP.Primary.RPS = GetConVar("ttt_batarang_rps"):GetFloat()
 SWEP.Primary.Ammo = "none"
-
 if CLIENT then
     function SWEP:GetViewModelPosition(pos, ang)
         pos = pos + ang:Forward() * 4
-
         return pos, ang
     end
 end
@@ -79,17 +73,12 @@ function SWEP:PrimaryAttack()
     local dmg = DamageInfo()
     dmg:SetAttacker(self:GetOwner())
     dmg:SetInflictor(self)
-
-    if GetConVar("ttt_batarang_primary_sound"):GetBool() then
-        self:EmitSound("weapons/batarang/throw" .. tostring(math.random(1, 4)) .. ".wav")
-    end
-
+    if GetConVar("ttt_batarang_primary_sound"):GetBool() then self:EmitSound("weapons/batarang/throw" .. tostring(math.random(1, 4)) .. ".wav") end
     local dm = GetConVar("ttt_batarang_damage"):GetInt()
     self:ShootBullet(dm, 1, 0)
     self:TakePrimaryAmmo(1)
     self:GetOwner():ViewPunch(Angle(-1, 0, 0))
     self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
-
     if SERVER then
         local batarang = ents.Create("ent_ttt_ttt2_batarang")
         batarang:SetAngles(self:GetOwner():EyeAngles())
@@ -101,9 +90,6 @@ function SWEP:PrimaryAttack()
         local phys = batarang:GetPhysicsObject()
         phys:SetVelocity(self:GetOwner():GetAimVector() * 7000)
         phys:AddAngleVelocity(Vector(0, 0, 90))
-
-        if self:Clip1() == 0 then
-            self:Remove()
-        end
+        if self:Clip1() == 0 then self:Remove() end
     end
 end
