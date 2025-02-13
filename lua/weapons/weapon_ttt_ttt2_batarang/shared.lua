@@ -70,26 +70,30 @@ end
 function SWEP:PrimaryAttack()
     self:SetNextPrimaryFire(CurTime() + 1 / self.Primary.RPS)
     if not self:CanPrimaryAttack() then return end
+    local owner = self:GetOwner()
+    if not IsValid(owner) then return end
+    if SERVER then owner:LagCompensation(true) end
     local dmg = DamageInfo()
-    dmg:SetAttacker(self:GetOwner())
+    dmg:SetAttacker(owner)
     dmg:SetInflictor(self)
     if GetConVar("ttt_batarang_primary_sound"):GetBool() then self:EmitSound("weapons/batarang/throw" .. tostring(math.random(1, 4)) .. ".wav") end
     local dm = GetConVar("ttt_batarang_damage"):GetInt()
     self:ShootBullet(dm, 1, 0)
     self:TakePrimaryAmmo(1)
-    self:GetOwner():ViewPunch(Angle(-1, 0, 0))
+    owner:ViewPunch(Angle(-1, 0, 0))
     self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
     if SERVER then
         local batarang = ents.Create("ent_ttt_ttt2_batarang")
-        batarang:SetAngles(self:GetOwner():EyeAngles())
-        batarang:SetPos(self:GetOwner():GetShootPos())
-        batarang:SetOwner(self:GetOwner())
-        batarang:SetPhysicsAttacker(self:GetOwner())
+        batarang:SetAngles(owner:EyeAngles())
+        batarang:SetPos(owner:GetShootPos())
+        batarang:SetOwner(owner)
+        batarang:SetPhysicsAttacker(owner)
         batarang:Spawn()
         batarang:Activate()
         local phys = batarang:GetPhysicsObject()
-        phys:SetVelocity(self:GetOwner():GetAimVector() * 7000)
+        phys:SetVelocity(owner:GetAimVector() * 7000)
         phys:AddAngleVelocity(Vector(0, 0, 90))
         if self:Clip1() == 0 then self:Remove() end
+        owner:LagCompensation(false)
     end
 end
