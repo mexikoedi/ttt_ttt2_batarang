@@ -2,7 +2,7 @@
 
 [TTT|2] Batarang [WEAPON] addon for Garry's Mod.
 
-More information are available here: 
+More information is available here: 
 https://steamcommunity.com/sharedfiles/filedetails/?id=2024708568
 
 Feel free to contribute to this project. <br>
