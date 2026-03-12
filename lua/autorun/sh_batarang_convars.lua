@@ -6,7 +6,7 @@ CreateConVar("ttt_batarang_automaticFire", "0", {FCVAR_REPLICATED, FCVAR_ARCHIVE
 CreateConVar("ttt_batarang_damage", "150", {FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY}, "Damage dealt on impact")
 CreateConVar("ttt_batarang_ammo", "3", {FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY}, "Default ammo the batarang has when bought")
 CreateConVar("ttt_batarang_clipSize", "3", {FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY}, "Clipsize of the batarang")
-CreateConVar("ttt_batarang_rps", "0.4", {FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY}, "Shots per second")
+CreateConVar("ttt_batarang_rps", "1.0", {FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY}, "Shots per second")
 hook.Add("TTTUlxInitCustomCVar", "TTTBatarangInitRWCVar", function(name)
     ULib.replicatedWritableCvar("ttt_batarang_primary_sound", "rep_ttt_batarang_primary_sound", GetConVar("ttt_batarang_primary_sound"):GetBool(), true, false, name)
     ULib.replicatedWritableCvar("ttt_batarang_hit_sound", "rep_ttt_batarang_hit_sound", GetConVar("ttt_batarang_hit_sound"):GetBool(), true, false, name)
@@ -83,7 +83,7 @@ if CLIENT then
         })
 
         tttrslst1:AddItem(xlib.makeslider{
-            label = "ttt_batarang_rps (Def. 0.4)",
+            label = "ttt_batarang_rps (Def. 1.0)",
             repconvar = "rep_ttt_batarang_rps",
             min = 0,
             max = 10,

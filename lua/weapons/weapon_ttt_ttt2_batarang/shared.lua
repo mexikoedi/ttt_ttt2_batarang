@@ -21,7 +21,7 @@ SWEP.EquipMenuData = {
     desc = "Throw Batarangs at your enemies like Batman."
 }
 
-SWEP.AllowDrop = false
+SWEP.AllowDrop = true
 SWEP.IsSilent = false
 SWEP.NoSights = false
 SWEP.AutoSpawnable = false
@@ -35,7 +35,7 @@ SWEP.AdminOnly = false
 SWEP.AdminSpawnable = false
 SWEP.UseHands = true
 SWEP.ViewModel = "models/rottweiler/v_batarang.mdl"
-SWEP.WorldModel = "models/rottweiler/w_batarang.mdl"
+SWEP.WorldModel = "models/rottweiler/batarang_thrown.mdl"
 SWEP.ViewModelFOV = 86
 SWEP.Primary.Recoil = 0.5
 SWEP.Primary.Damage = GetConVar("ttt_batarang_damage"):GetInt()
@@ -48,6 +48,39 @@ if CLIENT then
     function SWEP:GetViewModelPosition(pos, ang)
         pos = pos + ang:Forward() * 4
         return pos, ang
+    end
+
+    function SWEP:DrawWorldModel()
+        if not IsValid(self) then return end
+        local owner = self:GetOwner()
+        if not IsValid(owner) then
+            self:DrawModel()
+            return
+        end
+
+        local rightHandBone = owner:LookupBone("ValveBiped.Bip01_R_Hand")
+        if not rightHandBone then return end
+        local rightHandPos, rightHandAngle = owner:GetBonePosition(rightHandBone)
+        if not rightHandPos or not rightHandAngle then return end
+        rightHandPos = rightHandPos + rightHandAngle:Forward() * 8 + rightHandAngle:Right() * 1.5 + rightHandAngle:Up() * -4
+        rightHandAngle:RotateAroundAxis(rightHandAngle:Right(), 180)
+        if not IsValid(self.HeldWorldModel) then
+            self.HeldWorldModel = ClientsideModel("models/rottweiler/w_batarang.mdl", RENDERGROUP_OPAQUE)
+            self.HeldWorldModel:SetNoDraw(true)
+        end
+
+        render.Model({
+            model = "models/rottweiler/w_batarang.mdl",
+            pos = rightHandPos,
+            angle = rightHandAngle
+        }, self.HeldWorldModel)
+    end
+
+    function SWEP:OnRemove()
+        if IsValid(self.HeldWorldModel) then
+            self.HeldWorldModel:Remove()
+            self.HeldWorldModel = nil
+        end
     end
 end
 
@@ -73,15 +106,10 @@ function SWEP:PrimaryAttack()
     local owner = self:GetOwner()
     if not IsValid(owner) then return end
     if SERVER then owner:LagCompensation(true) end
-    local dmg = DamageInfo()
-    dmg:SetAttacker(owner)
-    dmg:SetInflictor(self)
     if GetConVar("ttt_batarang_primary_sound"):GetBool() then self:EmitSound("weapons/batarang/throw" .. tostring(math.random(1, 4)) .. ".wav") end
-    local dm = GetConVar("ttt_batarang_damage"):GetInt()
-    self:ShootBullet(dm, 1, 0)
-    self:TakePrimaryAmmo(1)
     owner:ViewPunch(Angle(-1, 0, 0))
     self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
+    self:TakePrimaryAmmo(1)
     if SERVER then
         local batarang = ents.Create("ent_ttt_ttt2_batarang")
         batarang:SetAngles(owner:EyeAngles())
@@ -91,7 +119,7 @@ function SWEP:PrimaryAttack()
         batarang:Spawn()
         batarang:Activate()
         local phys = batarang:GetPhysicsObject()
-        phys:SetVelocity(owner:GetAimVector() * 7000)
+        phys:SetVelocity(owner:GetAimVector() * 100000)
         phys:AddAngleVelocity(Vector(0, 0, 90))
         if self:Clip1() == 0 then self:Remove() end
         owner:LagCompensation(false)
